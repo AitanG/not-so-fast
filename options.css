@@ -1,0 +1,109 @@
+div {
+    font-size: 15px;
+}
+
+#settings {
+    min-height: 900px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 50px;
+}
+
+#not-so-fast-header-container {
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+#not-so-fast-logo {
+    float: left;
+    margin-right: 15px;
+}
+
+#not-so-fast-header {
+    font-size: 30px;
+    font-weight: 650;
+    font-style: italic;
+    float: left;
+    height: 25px;
+    line-height: 25px;
+}
+
+#grace-period-container {
+    margin-bottom: 11px;
+}
+
+#grace-period {
+    width: 250px;
+}
+
+#grace-period-value {
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
+#speed-presets {
+    margin-bottom: 40px;
+}
+
+#test-grace-period {
+    margin-bottom: 20px;
+}
+
+#results-container {
+    width: 250px;
+    height: 500px;
+    overflow: hidden;
+    margin: 0;
+}
+
+.result {
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #bbb;
+    background: #f5f5f5;
+    margin-bottom: 12px;
+}
+
+.result.success {
+    background: lightgreen;
+}
+
+.result.fail {
+    background: pink;
+}
+
+.link {
+    font-size: 18px;
+    text-decoration: underline;
+    color: #00a;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.description {
+    font-size: 14px;
+}
+
+#start-test {
+    margin-top: 30px;
+}
+
+.counter {
+    font-weight: bold;
+}
+
+#num-bad-clicks {
+    color: red;
+}
+
+#num-good-clicks {
+    color: green;
+}
+
+#num-blocked-good-clicks {
+    color: red;
+}
+
+#num-blocked-bad-clicks {
+    color: green;
+}

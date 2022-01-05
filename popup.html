@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body>
+    <i class="material-icons" id="settings">settings</i>
+    <span id="not-so-fast-header-container">
+      <img src="images/not_so_fast_48.png" id="not-so-fast-logo">
+      <div id="not-so-fast-header">Not So Fast</div>
+    </span>
+    <div id="main-content" class>
+      <div class="pane">
+        <h3 id="hostname"></h3>
+        <div id="divider"></div>
+        <div id="paused-label">The extension is paused on this site.</div>
+        <div id="toggle-label">Pause on this site:</div>
+        <div id="options">
+          <div id="toggle-once" class="option">Once</div>
+          <div id="toggle-always" class="option">Always</div>
+        </div>
+      </div>
+      <div class="pane">
+        <div id="stats">
+          <div id="num-clicks">0</div>
+          <div id="clicks-intercepted-label">clicks intercepted on this page</div>
+        </div>
+      </div>
+    </div>
+    <div id="alt-content" class="hidden">
+      <div class="pane">
+        <h3>(Disabled at this URL.)</h3>
+      </div>
+    </div>
+  </body>
+  <script src="popup.js"></script>
+</html>

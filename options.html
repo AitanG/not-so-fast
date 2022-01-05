@@ -1,0 +1,57 @@
+<DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="options.css">
+    <script src="options.js"></script>
+  </head>
+  <body>
+    <div id="feedback"></div>
+    <div id="settings" class="pane">
+      <span id="not-so-fast-header-container">
+        <img src="images/not_so_fast_128.png" height="64" id="not-so-fast-logo">
+        <div id="not-so-fast-header">Not So Fast</div>
+      </span>
+      <h2>Set grace period length</h2>
+      <div>
+        Determine how long the browser should wait after an element changes before responding to clicks. Setting a longer grace period gives you more time to react to changes on the webpage.
+      </div>
+      <div id="grace-period-value">
+        0.3 seconds
+      </div>
+      <div id="grace-period-container">
+        <input type="range" id="grace-period" min="0.2" max="0.65" step="0.05" value="0.3">
+      </div>
+      <div id="speed-presets">
+        <div class="btn btn-sm" value="0.2">Very Fast (0.2s)</div>
+        <div class="btn btn-sm" value="0.25">Fast (0.25s)</div>
+        <div class="btn btn-sm selected" value="0.35">Normal (0.35s)</div>
+        <div class="btn btn-sm" value="0.55">Slow (0.55s)</div>
+        <div class="btn btn-sm" value="0.7">Very slow (0.7s)</div>
+      </div>
+      <div id="test-grace-period" class="btn">Test Grace Period</div>
+      <div id="demo-container" class="hidden">
+        <h2>Instructions</h2>
+        <div>After you click "Start Test", dummy links will start appearing below. To test the current grace period setting, click on a handful of links that say "Click me", while avoiding clicking those that say "Avoid me". It's not necessary to click on every link that says "Click me".</div>
+        <div>The counters below will track your clicks. If you accidentally click on a link that says "Avoid me", your click may or may not not be counted, depending on whether it happens during or after the grace period.</div>
+        <div>A well-calibrated grace period should be short enough to let intentional clicks through, and long enough to prevent most accidental clicks. The occasional accidental click is fine, because these are clicks that would have also gone through without Not So Fast enabled. <b>Note: This is supposed to be a difficult task</b>. Your main goal should be finding a well-calibrated grace period--not getting a high score.</div>
+        <div id="start-test" class="btn">Start Test</div>
+        <div id="counters">
+          <span id="num-good-clicks" class="counter">0</span>
+          <span class="counter-label">good clicks registered</span>
+          <br>
+          <span id="num-blocked-good-clicks" class="counter">0</span>
+          <span class="counter-label">good clicks blocked</span>
+          <br>
+          <span id="num-bad-clicks" class="counter">0</span>
+          <span class="counter-label">bad clicks registered</span>
+          <br>
+          <span id="num-blocked-bad-clicks" class="counter">0</span>
+          <span class="counter-label">bad clicks blocked</span>
+        </div>
+        <div id="results-container" class="hidden">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
