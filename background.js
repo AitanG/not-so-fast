@@ -5,10 +5,10 @@ chrome.webNavigation.onCommitted.addListener(function(e) {
             let hostname = url.hostname.replace(/^www\./, '')
 
             chrome.storage.sync.get(async data => {
-                if (!data.blacklist) {
-                    chrome.storage.sync.set({blacklist: []})
+                if (!data.whitelist) {
+                    chrome.storage.sync.set({whitelist: []})
                 } else {
-                    if (hostname && data.blacklist.indexOf(hostname) === -1) {
+                    if (hostname && data.whitelist.indexOf(hostname) === -1) {
                         chrome.tabs.sendMessage(tab.id, {msg: 'blockForHostname', hostname})
                     }
                 }

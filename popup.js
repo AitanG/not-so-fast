@@ -1,4 +1,4 @@
-let blacklisted = false
+let whitelisted = false
 
 let sendMessage = request => {
   chrome.tabs.query({active: true, currentWindow: true}).then(tabs => {
@@ -31,9 +31,9 @@ let toggleAlways = event => {
   // TODO: update popup
   chrome.storage.sync.get(data => {
     let hostname = document.getElementById('hostname').innerHTML
-    sendMessage({msg: 'blacklist'})
-    let blacklist = (data.blacklist || []).concat([hostname])
-    chrome.storage.sync.set({blacklist})
+    sendMessage({msg: 'whitelist'})
+    let whitelist = (data.whitelist || []).concat([hostname])
+    chrome.storage.sync.set({whitelist})
   })
 }
 
@@ -50,8 +50,8 @@ window.onload = () => {
     if (hostname) {
       document.getElementById('hostname').innerHTML = hostname
       chrome.storage.sync.get(data => {
-        if (data.blacklist.indexOf(hostname) !== -1) {
-          blacklisted = true
+        if (data.whitelist.indexOf(hostname) !== -1) {
+          whitelisted = true
           document.getElementById('paused-label').setAttribute('style', 'display:block')
 
           // TODO: figure out SM for this, also find a better way to implement it

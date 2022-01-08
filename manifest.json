@@ -28,7 +28,8 @@
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_start",
       "all_frames": true,
-      "js": ["content-script.js"] // TODO: active tab only?
+      "js": ["content.js"], // TODO: active tab only?
+      "css": ["content.css"]
     }
   ]
 }
