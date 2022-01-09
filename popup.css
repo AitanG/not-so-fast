@@ -1,117 +1,117 @@
 body {
-  width: 330px;
-  margin: 0;
+    width: 330px;
+    margin: 0;
 }
 
 h3 {
-  font-size: 17px;
-  font-weight: bold;
-  text-align: center;
-  margin: 10px;
-  overflow: hidden;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px;
+    overflow: hidden;
 }
 
 #settings {
-  cursor: pointer;
-  color: #a0a0a0;
-  position: absolute;
-  top: 7px;
-  right: 7px;
+    cursor: pointer;
+    color: #a0a0a0;
+    position: absolute;
+    top: 7px;
+    right: 7px;
 }
 
 #paused-label {
-  text-align: center;
-  font-size: 14px;
-  display: none;
+    text-align: center;
+    font-size: 14px;
+    display: none;
 }
 
 #toggle-label {
-  margin: 10px;
-  font-size: 15px;
+    margin: 10px;
+    font-size: 15px;
 }
 
 #options {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .option {
-  background: white;
-  padding: 7px;
-  width: 100px;
-  text-align: center;
-  border-radius: 5px;
-  margin: 10px;
-  font-size: 13px;
-  font-weight: 400;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  user-select: none;
+    background: white;
+    padding: 7px;
+    width: 100px;
+    text-align: center;
+    border-radius: 5px;
+    margin: 10px;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    user-select: none;
 }
 
 .option:hover {
-  background: #f4f4f4;
+    background: #f4f4f4;
 }
 
 .option.disabled {
-  pointer-events: none;
-  opacity: 0.5;
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 #divider {
-  width: 85%;
-  height: 1px;
-  background: #eee;
-  margin: 20px auto;
+    width: 85%;
+    height: 1px;
+    background: #eee;
+    margin: 20px auto;
 }
 
 #stats {
-  display: flex;
-  flex-direction: row;
-  margin: 10px;
-  justify-content: flex-start;
-  align-items: flex-end;
-  column-gap: 4px;
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    justify-content: flex-start;
+    align-items: flex-end;
+    column-gap: 4px;
 }
 
 #num-clicks {
-  color: orange;
-  font-weight: bold;
-  font-size: 15px;
+    color: orange;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 #clicks-intercepted-label {
-  font-size: 15px;
+    font-size: 15px;
 }
 
 #not-so-fast-header-container {
-  display: inline-block;
+    display: inline-block;
 }
 
 #not-so-fast-logo {
-  margin: 10px 10px 0 10px;
-  float: left;
+    margin: 10px 10px 0 10px;
+    float: left;
 }
 
 #not-so-fast-header {
-  font-size: 20px;
-  font-weight: 650;
-  font-style: italic;
-  float: left;
-  height: 30px;
-  line-height: 30px;
+    font-size: 20px;
+    font-weight: 650;
+    font-style: italic;
+    float: left;
+    height: 30px;
+    line-height: 30px;
 }
 
 .whitelisted .main-pane {
-  background: #ffe5e5;
+    background: #ffe5e5;
 }
 
 .whitelisted #paused-label {
-  display: block;
+    display: block;
 }
 
 .whitelisted #divider {
-  background: #ffbfbf;
+    background: #ffbfbf;
 }
