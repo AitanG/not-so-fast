@@ -1,0 +1,19 @@
+#not-so-fast__feedback {
+    position: fixed;
+    width: 1px;
+    height: 1px;
+    z-index: 9999999999;
+    opacity: 0;
+    border: 0px solid black;
+    border-radius: 12px;
+    background: black;
+    margin: 0;
+    transition: border-width 0.2s, transform 0.2s, opacity 0.1s;
+    pointer-events: none;
+}
+
+#not-so-fast__feedback.not-so-fast__visible {
+    opacity: 0.13;
+    border-width: 12px;
+    transform: translate(-12px, -12px);
+}

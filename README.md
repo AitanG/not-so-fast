@@ -14,7 +14,7 @@ The extension works by constantly tracking which elements are under the mouse. T
 
 The real implementation is slightly more complicated than this, but this should give a general idea. The overall result is supposed to be a high-precision blocking of accidental mouse events with minimal impact on memory and CPU. See `content-script.js` for more implementation details.
 
-The user has the ability to adjust the length of the grace period in the extension's options. They can also pause the extension on a page and "blacklist" domains.
+The user has the ability to adjust the length of the grace period in the extension's options. They can also pause the extension on a page and whitelist domains.
 
 ## Progress
 
