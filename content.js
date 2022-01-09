@@ -3,6 +3,7 @@
     let UPDATE_DELAY_MS = 50     // Make sure delayMs is short enough that "blinking" elements don't throw it off
     let GRACE_PERIOD_CYCLES = 6  // Updated by Chrome storage. Extra slow: 0.6, slow: 0.5, normal: 0.3, fast: 0.2, extra fast: 0.15
     let MOUSE_STATIONARY_MS = GRACE_PERIOD_CYCLES * UPDATE_DELAY_MS  // Should really be the same as grace period?
+    let MAX_ERROR_COUNT = 100
 
 
     // `addEventListener()` overwrite inspired by Stack Overflow answer:
@@ -64,6 +65,8 @@
     let feedbackId = null
     let isBlockingAllClicks = true
     let elemsToBlockFromMousedown = new Set()
+    let anchorIndex = -1
+    let errorCount = 0
 
 
     let arrayEquals = (a, b) => a.length === b.length && a.every((val, index) => val === b[index])
@@ -255,6 +258,64 @@
     }
 
 
+    // Intercept events for elements we're currently hovering on.
+    // Only do this when no recent mouse moves.
+    // Edge case: clicking on an element within an anchor tag follows
+    // the link without registering a click on the <a> element itself.
+    let maybeInterceptEvents = (elem, i) => {
+        try {
+            elem._hovering = true
+
+            // Intercept click listeners
+            let needsMousedownWrapper = false
+            if (!elem._hasOnclickInterceptor) {
+                if (i <= anchorIndex || elem.onclick || elem.href || elem.nodeName === 'BUTTON' || elem.nodeName === 'INPUT') {
+                    // Overriding click events also prevents anchor from being followed!
+                    interceptHtmlClickEvent(elem)
+                    needsMousedownWrapper = true
+                }
+            }
+            if (elem._clickListeners) {
+                elem._clickListeners.forEach(listenerInfo => {
+                    if (!listenerInfo.listener._isWrapper) {
+                        interceptJsClickEvent(elem, listenerInfo)
+                    }
+                })
+                needsMousedownWrapper = true
+            }
+
+            // Intercept mousedown listeners
+            if (elem.onmousedown) {
+                if (!elem._hasOnmousedownInterceptor) {
+                    interceptHtmlMousedownEvent(elem)
+                }
+                needsMousedownWrapper = false
+            }
+            if (elem._mousedownListeners) {
+                elem._mousedownListeners.forEach(listenerInfo => {
+                    if (!listenerInfo.listener._isWrapper) {
+                        interceptJsMousedownEvent(elem, listenerInfo)
+                    }
+                })
+                needsMousedownWrapper = false
+            }
+
+            // Intercept mousedown events if intercepting clicks.
+            // Even if there are no mousedown events to block, we
+            // still want to update `elemsToBlockFromMousedown`.
+            if (needsMousedownWrapper) {
+                interceptHtmlMousedownEvent(elem)
+            }
+        } catch (error) {
+            // Something unexpected went wrong. Try not to ruin it for everyone else.
+            errorCount++
+            if (errorCount > MAX_ERROR_COUNT) {
+                pauseOnPage = true
+            }
+        }
+    }
+
+
     let runLoop = lastIterTimeMs => {
         // Grace period is GRACE_PERIOD_CYCLES * UPDATE_DELAY_MS
         // Have to update more frequently than grace period because handlers might change
@@ -282,57 +343,8 @@
 
             // Don't attach new interceptors if we're pausing, but keep looping in case of unpause
             if (!pauseOnPage) {
-                // Intercept events for elements we're currently hovering on.
-                // Only do this when no recent mouse moves.
-
-                // Edge case: clicking on an element within an anchor tag follows
-                // the link without registering a click on the <a> element itself.
-                let anchorIndex = hoverElems.findIndex(e => e.nodeName === 'A')
-
-                hoverElems.forEach((elem, i) => {
-                    elem._hovering = true
-
-                    // Intercept click listeners
-                    let needsMousedownWrapper = false
-                    if (!elem._hasOnclickInterceptor) {
-                        if (i <= anchorIndex || elem.onclick || elem.href || elem.nodeName === 'BUTTON' || elem.nodeName === 'INPUT') {
-                            // Overriding click events also prevents anchor from being followed!
-                            interceptHtmlClickEvent(elem)
-                            needsMousedownWrapper = true
-                        }
-                    }
-                    if (elem._clickListeners) {
-                        elem._clickListeners.forEach(listenerInfo => {
-                            if (!listenerInfo.listener._isWrapper) {
-                                interceptJsClickEvent(elem, listenerInfo)
-                            }
-                        })
-                        needsMousedownWrapper = true
-                    }
-
-                    // Intercept mousedown listeners
-                    if (elem.onmousedown) {
-                        if (!elem._hasOnmousedownInterceptor) {
-                            interceptHtmlMousedownEvent(elem)
-                        }
-                        needsMousedownWrapper = false
-                    }
-                    if (elem._mousedownListeners) {
-                        elem._mousedownListeners.forEach(listenerInfo => {
-                            if (!listenerInfo.listener._isWrapper) {
-                                interceptJsMousedownEvent(elem, listenerInfo)
-                            }
-                        })
-                        needsMousedownWrapper = false
-                    }
-
-                    // Intercept mousedown events if intercepting clicks.
-                    // Even if there are no mousedown events to block, we
-                    // still want to update `elemsToBlockFromMousedown`.
-                    if (needsMousedownWrapper) {
-                        interceptHtmlMousedownEvent(elem)
-                    }
-                })
+                anchorIndex = hoverElems.findIndex(e => e.nodeName === 'A')
+                hoverElems.forEach(maybeInterceptEvents)
             }
 
             // Loop with delay
