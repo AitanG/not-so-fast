@@ -11,6 +11,9 @@
     let DEMO_CONTAINER_ELEM
     let START_TEST_ELEM
     let RESULTS_CONTAINER_ELEM
+    let WHITELIST_MODAL_BACKGROUND_ELEM
+    let WHITELIST_MODAL_ELEM
+    let WHITELIST_ELEM
 
     let numBadClicks = 0
     let numGoodClicks = 0
@@ -150,6 +153,11 @@
         DEMO_CONTAINER_ELEM = document.getElementById('demo-container')
         START_TEST_ELEM = document.getElementById('start-test')
         RESULTS_CONTAINER_ELEM = document.getElementById('results-container')
+        WHITELIST_MODAL_BACKGROUND_ELEM = document.getElementById('whitelist-modal-background')
+        WHITELIST_ELEM = document.getElementById('whitelist')
+        CANCEL_BUTTON_ELEM = document.getElementById('cancel-button')
+        SAVE_BUTTON_ELEM = document.getElementById('save-button')
+        EDIT_WHITELIST_ELEM = document.getElementById('edit-whitelist')
 
         chrome.storage.sync.get(data => {
             if (data.gracePeriodS) {
@@ -181,18 +189,23 @@
             }, true)
 
 
+            EDIT_WHITELIST_ELEM.addEventListener('click', e => {
+                chrome.storage.sync.get(d => {
+                    WHITELIST_ELEM.value = d.whitelist.join('\n') || ''
+                    WHITELIST_MODAL_BACKGROUND_ELEM.classList.remove('hidden')
+                })
+            })
 
+            CANCEL_BUTTON_ELEM.addEventListener('click', e => {
+                // reset
+                WHITELIST_MODAL_BACKGROUND_ELEM.classList.add('hidden')
+                WHITELIST_ELEM.value = data.whitelist
+            })
 
-
-
-
-
-
-            if (!data.whitelist) {
-                chrome.storage.sync.set({whitelist: []})
-            } else {
-                console.log(data.whitelist)
-            }
+            SAVE_BUTTON_ELEM.addEventListener('click', e => {
+                WHITELIST_MODAL_BACKGROUND_ELEM.classList.add('hidden')
+                chrome.storage.sync.set({whitelist: WHITELIST_ELEM.value.split(' ')})
+            })
         })
     }
 })()

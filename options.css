@@ -107,3 +107,44 @@ div {
 #num-blocked-bad-clicks {
     color: green;
 }
+
+#whitelist-modal-background {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #0000000c;
+    margin: 0;
+}
+
+#whitelist-modal {
+    background: white;
+    width: 750px;
+    height: 600px;
+    margin: 150px auto 0 auto;
+    border-radius: 12px;
+    padding: 40px;
+}
+
+#whitelist {
+    width: 750px;
+    height: 490px;
+    padding: 15px;
+    font-family: sans-serif;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+#whitelist:focus-visible {
+    outline-color: #afc3ff;
+}
+
+#whitelist-button-container {
+    display: flex;
+    padding: 0 200px;
+}
+
+#edit-whitelist {
+    margin-bottom: 20px;
+}

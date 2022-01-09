@@ -7,11 +7,24 @@
   </head>
   <body>
     <div id="feedback"></div>
+    <div id="whitelist-modal-background" class="hidden">
+      <div id="whitelist-modal">
+        <h2>Edit whitelist</h2>
+        <textarea id="whitelist"></textarea>
+        <div id="whitelist-button-container">
+          <div id="cancel-button" class="btn">Cancel</div>
+          <div id="save-button" class="btn primary">Save Changes</div>
+        </div>
+      </div>
+    </div>
     <div id="settings" class="pane">
       <span id="not-so-fast-header-container">
         <img src="images/not_so_fast_128.png" height="64" id="not-so-fast-logo">
         <div id="not-so-fast-header">Not So Fast</div>
       </span>
+      <h2>Whitelist</h2>
+      <div>Your whitelist is a list of every website for which you've told Not So Fast to "Always" pause. You can add and remove websites from this list by clicking on the extension icon or by manually editing below.</div>
+      <div id="edit-whitelist" class="btn">Edit whitelist</div>
       <h2>Set grace period length</h2>
       <div>
         Determine how long the browser should wait after an element changes before responding to clicks. Setting a longer grace period gives you more time to react to changes on the webpage.

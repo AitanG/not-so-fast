@@ -52,6 +52,12 @@ div {
     color: white;
 }
 
+.btn.primary {
+    background: #2666ff;
+    border: 1px solid #0031a6;
+    color: white;
+}
+
 #feedback {
     position: fixed;
     width: 1px;
