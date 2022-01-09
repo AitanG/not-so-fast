@@ -1,4 +1,11 @@
+let MAIN_CONTENT_ELEM
+let TOGGLE_LABEL_ELEM
+let HOSTNAME_ELEM
+let TOGGLE_ONCE_ELEM
+
 let whitelisted = false
+let websiteName = ''
+let paused = false
 
 let sendMessage = request => {
   chrome.tabs.query({active: true, currentWindow: true}).then(tabs => {
@@ -24,15 +31,32 @@ let getCurrentHostname = async callbackFn => {
 }
 
 let toggleOnce = event => {
-  sendMessage({msg: 'pauseOnPage'})
+  if (!paused) {
+    sendMessage({msg: 'pauseOnPage'})
+    paused = true
+    TOGGLE_ONCE_ELEM.classList.add('disabled')
+  }
 }
 
 let toggleAlways = event => {
-  // TODO: update popup
   chrome.storage.sync.get(data => {
-    let hostname = document.getElementById('hostname').innerHTML
-    sendMessage({msg: 'whitelist'})
-    let whitelist = (data.whitelist || []).concat([hostname])
+    let whitelist = data.whitelist
+    if (whitelisted) {
+      sendMessage({msg: 'unwhitelist'})
+      let index = whitelist.indexOf(websiteName)
+      if (index !== -1) {
+        whitelist.splice(index, 1)
+      }
+      MAIN_CONTENT_ELEM.classList.remove('whitelisted')
+      TOGGLE_LABEL_ELEM.innerHTML = 'Pause on this site:'
+    } else {
+      sendMessage({msg: 'whitelist'})
+      whitelist = (whitelist || []).concat([websiteName])
+      MAIN_CONTENT_ELEM.classList.add('whitelisted')
+      TOGGLE_LABEL_ELEM.innerHTML = 'Unpause on this site:'
+    }
+
+    whitelisted = !whitelisted
     chrome.storage.sync.set({whitelist})
   })
 }
@@ -47,32 +71,35 @@ let handleMessage = (request, sender, sendResponse) => {
 
 window.onload = () => {
   getCurrentHostname(hostname => {
+    MAIN_CONTENT_ELEM = document.getElementById('main-content')
+    TOGGLE_LABEL_ELEM = document.getElementById('toggle-label')
+    HOSTNAME_ELEM = document.getElementById('hostname')
+    TOGGLE_ONCE_ELEM = document.getElementById('toggle-once')
+
+    websiteName = hostname
+
     if (hostname) {
-      document.getElementById('hostname').innerHTML = hostname
+      HOSTNAME_ELEM.innerHTML = hostname
       chrome.storage.sync.get(data => {
         if (data.whitelist.indexOf(hostname) !== -1) {
           whitelisted = true
-          document.getElementById('paused-label').setAttribute('style', 'display:block')
-
-          // TODO: figure out SM for this, also find a better way to implement it
-          document.getElementById('toggle-label').innerHTML = 'Unpause on this site:'
+          MAIN_CONTENT_ELEM.classList.add('whitelisted')
+          TOGGLE_LABEL_ELEM.innerHTML = 'Unpause on this site:'
         }
       })
     } else {
-      document.getElementById('main-content').classList.add('hidden')
+      MAIN_CONTENT_ELEM.classList.add('hidden')
       document.getElementById('alt-content').classList.remove('hidden')
     }
+
+    TOGGLE_ONCE_ELEM.addEventListener('click', toggleOnce, true)
+
+    let toggleAlwaysButton = document.getElementById('toggle-always')
+    toggleAlwaysButton.addEventListener('click', toggleAlways, true)
+
+    let settingsIcon = document.getElementById('settings')
+    settingsIcon.addEventListener('click', goToSettings, true)
+
+    chrome.runtime.onMessage.addListener(handleMessage)
   })
-
-  let toggleOnceButton = document.getElementById('toggle-once')
-  toggleOnceButton.addEventListener('click', toggleOnce, true)
-
-  let toggleAlwaysButton = document.getElementById('toggle-always')
-  toggleAlwaysButton.addEventListener('click', toggleAlways, true)
-
-  let settingsIcon = document.getElementById('settings')
-  settingsIcon.addEventListener('click', goToSettings, true)
-
-  chrome.runtime.onMessage.addListener(handleMessage)
 }
-

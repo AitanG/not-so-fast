@@ -20,6 +20,7 @@
     let gracePeriodS = 0.3
     let timeOfLastAppend = 0
     let numStartStop = 0
+    let feedbackId = null
 
     let updateValue = (value, uiOnly) => {
         gracePeriodS = parseFloat(value)
@@ -38,17 +39,21 @@
         })
     }
 
-    let showFeedback = () => {
+    let showFeedback = (e, now) => {
         FEEDBACK_ELEM.setAttribute('style', `top:${e.clientY};left:${e.clientX}`)
         FEEDBACK_ELEM.classList.add('visible')
+        feedbackId = now
         setTimeout(() => {
-            FEEDBACK_ELEM.classList.remove('visible')
+            if (now === feedbackId) {
+                FEEDBACK_ELEM.classList.remove('visible')
+            }
         }, 700)
     }
 
     let linkClickHandler = e => {
         let elem = e.target
-        let timeSinceLastAppend = (elem._timeOfLastMousedown || Date.now()) - timeOfLastAppend
+        let now = Date.now()
+        let timeSinceLastAppend = (elem._timeOfLastMousedown || now) - timeOfLastAppend
         if (timeSinceLastAppend >= gracePeriodS * 1000) {
             if (elem._isClickMe) {
                 numGoodClicks++
@@ -60,7 +65,7 @@
                 elem.parentNode.classList.add('fail')
             }
         } else {
-            showFeedback()
+            showFeedback(e, now)
             if (elem._isClickMe) {
                 numBlockedGoodClicks++
                 NUM_BLOCKED_GOOD_CLICKS_ELEM.innerHTML = numBlockedGoodClicks
@@ -72,7 +77,13 @@
     }
 
     let linkMousedownHandler = e => {
-        e.target._timeOfLastMousedown = Date.now()
+        let elem = e.target
+        let now = Date.now()
+        let timeSinceLastAppend = now - timeOfLastAppend
+        if (timeSinceLastAppend < gracePeriodS * 1000) {
+            showFeedback(e, now)
+        }
+        elem._timeOfLastMousedown = now
     }
 
     let newResult = isClickMe => {
@@ -168,6 +179,20 @@
                     startTest()
                 }
             }, true)
+
+
+
+
+
+
+
+
+
+            if (!data.whitelist) {
+                chrome.storage.sync.set({whitelist: []})
+            } else {
+                console.log(data.whitelist)
+            }
         })
     }
 })()

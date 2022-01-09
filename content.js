@@ -61,6 +61,7 @@
     let timeOfMostRecentMouseMoveMs = 0
     let loading = true
     let feedbackElem = null
+    let feedbackId = null
     let isBlockingAllClicks = true
     let elemsToBlockFromMousedown = new Set()
 
@@ -115,8 +116,12 @@
         if (feedbackElem) {
             feedbackElem.setAttribute('style', `top:${curMousePosition[1]};left:${curMousePosition[0]}`)
             feedbackElem.classList.add('not-so-fast__visible')
+            let now = Date.now()
+            feedbackId = now
             setTimeout(() => {
-                feedbackElem.classList.remove('not-so-fast__visible')
+                if (now === feedbackId) {
+                    feedbackElem.classList.remove('not-so-fast__visible')
+                }
             }, 700)
         }
     }
@@ -220,7 +225,7 @@
     }
 
 
-    let blockAllClicksHandler = event => {
+    let blockEventHandler = event => {
         event.stopPropagation()
         event.preventDefault()
     }
@@ -237,9 +242,9 @@
         if (!loading && iterTimeMs > MAX_ITER_TIME_MS) {
             // Stop extension completely for pages where it's taking too long
             console.log(`Extension taking too long (${iterTimeMs}ms > ${MAX_ITER_TIME_MS}ms). Disabling for page.`)
-            document.removeEventListener('click', blockAllClicksHandler, true)
-            document.removeEventListener('mousedown', blockAllClicksHandler, true)
-            document.removeEventListener('mouseup', blockAllClicksHandler, true)
+            document.removeEventListener('click', blockEventHandler, true)
+            document.removeEventListener('mousedown', blockEventHandler, true)
+            document.removeEventListener('mouseup', blockEventHandler, true)
             document.removeEventListener('mousemove', updateMousePosHandler, true)
             // Reset currently hovered elems too
             bufferIndex++
@@ -266,9 +271,9 @@
             if (isBlockingAllClicks
                 && lastNHoverElems[GRACE_PERIOD_CYCLES - 1]) {
                 // We're ready to handle clicks once everything is set
-                document.removeEventListener('click', blockAllClicksHandler, true)
-                document.removeEventListener('mousedown', blockAllClicksHandler, true)
-                document.removeEventListener('mouseup', blockAllClicksHandler, true)
+                document.removeEventListener('click', blockEventHandler, true)
+                document.removeEventListener('mousedown', blockEventHandler, true)
+                document.removeEventListener('mouseup', blockEventHandler, true)
                 isBlockingAllClicks = false
             }
 
@@ -341,9 +346,9 @@
 
     let main = (hostname, gracePeriodS) => {
         // Block all clicks right after page load. Doesn't block other handlers attached to document, but we can live with that.
-        document.addEventListener('click', blockAllClicksHandler, true)
-        document.addEventListener('mousedown', blockAllClicksHandler, true)
-        document.addEventListener('mouseup', blockAllClicksHandler, true)
+        document.addEventListener('click', blockEventHandler, true)
+        document.addEventListener('mousedown', blockEventHandler, true)
+        document.addEventListener('mouseup', blockEventHandler, true)
         document.addEventListener('mouseup', () => setTimeout(() => elemsToBlockFromMousedown = new Set()), true)
         document.addEventListener('mousemove', updateMousePosHandler, true)
 
@@ -370,6 +375,9 @@
                 break
             case 'whitelist':
                 pauseOnPage = true
+                break
+            case 'unwhitelist':
+                pauseOnPage = false
                 break
         }
     }
