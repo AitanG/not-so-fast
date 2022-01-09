@@ -46,13 +46,13 @@ div {
     background: lightgray;
 }
 
-.btn.warn {
+.btn.btn-warn {
     background: red;
     border: 1px solid maroon;
     color: white;
 }
 
-.btn.primary {
+.btn.btn-primary {
     background: #2666ff;
     border: 1px solid #0031a6;
     color: white;

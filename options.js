@@ -116,7 +116,7 @@
     let startTest = () => {
         isTestStarted = true
         numStartStop++
-        START_TEST_ELEM.classList.add('warn')
+        START_TEST_ELEM.classList.add('btn-warn')
         START_TEST_ELEM.innerHTML = 'Stop Test'
         RESULTS_CONTAINER_ELEM.classList.remove('hidden')
 
@@ -126,7 +126,7 @@
     let stopTest = () => {
         isTestStarted = false
         numStartStop++
-        START_TEST_ELEM.classList.remove('warn')
+        START_TEST_ELEM.classList.remove('btn-warn')
         START_TEST_ELEM.innerHTML = 'Start Test'
         RESULTS_CONTAINER_ELEM.classList.add('hidden')
         RESULTS_CONTAINER_ELEM.innerHTML = ''
