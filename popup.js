@@ -7,6 +7,7 @@ let whitelisted = false
 let websiteName = ''
 let paused = false
 
+
 let sendMessage = request => {
     chrome.tabs.query({active: true, currentWindow: true}).then(tabs => {
         for (let tab of tabs) {
@@ -14,6 +15,7 @@ let sendMessage = request => {
         }
     })
 }
+
 
 let getCurrentHostname = async callbackFn => {
     let result
@@ -30,6 +32,7 @@ let getCurrentHostname = async callbackFn => {
     return result
 }
 
+
 let toggleOnce = event => {
     if (!paused) {
         sendMessage({msg: 'pauseOnPage'})
@@ -37,6 +40,7 @@ let toggleOnce = event => {
         TOGGLE_ONCE_ELEM.classList.add('disabled')
     }
 }
+
 
 let toggleAlways = event => {
     chrome.storage.sync.get(data => {
@@ -61,13 +65,11 @@ let toggleAlways = event => {
     })
 }
 
+
 let goToSettings = event => {
     window.open('options.html', '_blank')
 }
 
-let handleMessage = (request, sender, sendResponse) => {
-    console.log(request.msg)
-}
 
 window.onload = () => {
     getCurrentHostname(hostname => {
@@ -99,9 +101,5 @@ window.onload = () => {
 
         let settingsIcon = document.getElementById('settings')
         settingsIcon.addEventListener('click', goToSettings, true)
-
-        // TODO: update block count
-
-        chrome.runtime.onMessage.addListener(handleMessage)
     })
 }

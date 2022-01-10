@@ -131,15 +131,6 @@
     }
 
 
-    let updateStats = () => {
-        chrome.storage.sync.get(data => {
-            let stats = data.stats
-            stats[domId].numBlocks++
-            chrome.storage.sync.set({stats})
-        })
-    }
-
-
     let interceptJsMousedownEvent = (elem, listenerInfo) => {
         // For JS handlers, you have to override every handler to block.
 
@@ -154,7 +145,6 @@
                 event.preventDefault()
                 elemsToBlockFromMousedown.add(event.target)
                 showFeedback()
-                updateStats()
             }
             replaceHandler(event.target, wrappedMousedownHandler, listenerInfo.listener, listenerInfo)  // unwrap
             if (!block && listenerInfo.listener) listenerInfo.listener(event)
@@ -174,7 +164,6 @@
             if (block) {
                 event.preventDefault()
                 showFeedback()
-                updateStats()
             }
             replaceHandler(event.target, wrappedClickHandler, listenerInfo.listener, listenerInfo)  // unwrap
             if (!block && listenerInfo.listener) listenerInfo.listener(event)
@@ -200,7 +189,6 @@
                 event.preventDefault()
                 elemsToBlockFromMousedown.add(event.target)
                 showFeedback()
-                updateStats()
             }
             event.target._hasOnmousedownInterceptor = false
             event.target._removeEventListener('mousedown', onmousedownInterceptor, true)
@@ -221,7 +209,6 @@
                 event.stopPropagation()
                 event.preventDefault()
                 showFeedback()
-                updateStats()
             }
             event.target._hasOnclickInterceptor = false
             event.target._removeEventListener('click', onclickInterceptor, true)
@@ -361,15 +348,6 @@
                 hoverElems.forEach(maybeInterceptEvents)
             }
 
-            // Update pulse
-            if (bufferIndex % 100 === 0) {
-                chrome.storage.sync.get(data => {
-                    let stats = data.stats
-                    stats[domId].lastActive = Date.now()
-                    chrome.storage.sync.set({stats})
-                })
-            }
-
             // Loop with delay
             iterTimeMs = Date.now() - start
             if (!maybeExitLoop(iterTimeMs, hoverElems)) {
@@ -380,27 +358,7 @@
 
 
     let main = (hostname, gracePeriodS) => {
-        // Create stats object for every DOM to keep track of blocks
-        chrome.storage.sync.get(data => {
-            // First clean up old stats objects
-            let keysToRemove = []
-            Object.entries(data).forEach(item => {
-                if (domId - item[1].lastActive > 100000) {
-                    // No pulse
-                    keysToRemove.push(item[0])
-                }
-            })
-
-            chrome.storage.sync.remove(keysToRemove, () => {
-                domId = Date.now()
-                let stats = data.stats || {}
-                stats[domId] = {
-                    lastActive: domId,
-                    numBlocks: 0,
-                }
-                chrome.storage.sync.set({stats})
-            })
-        })
+        domId = Date.now()
 
         // Block all clicks right after page load. Doesn't block other handlers attached to document, but we can live with that.
         document.addEventListener('click', blockEventHandler, true)
