@@ -100,8 +100,6 @@ window.onload = () => {
         let settingsIcon = document.getElementById('settings')
         settingsIcon.addEventListener('click', goToSettings, true)
 
-        // TODO: update block count
-
         chrome.runtime.onMessage.addListener(handleMessage)
     })
 }
