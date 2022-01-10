@@ -6,7 +6,9 @@ Not So Fast is a Chrome extension under development that prevents accidental cli
 
 ## Problem
 
-Have you ever tried to click on something only to have some other button or link take its place right as you click on it? It's obvious to everyone that you meant to click on the first thing--that is, everyone but your browser. That's the problem Not So Fast solves. With Not So Fast, you can click without fear.
+Have you ever tried to click on something only to have some other button or link take its place right as you click on it? You meant to click on the first thing, and it seems obvious to everyone—that is, everyone but your browser. That's the problem Not So Fast solves.
+
+Not So Fast detects when elements have moved near your mouse and sets up a short "grace period" where any accidental clicks are ignored. This prevents unintended actions, like pressing the wrong button, losing your place on the page, or opening dangerous links. The added security also reduces the cognitive load of using your pointing device of choice, making for a more pleasant browsing experience.
 
 ## Implementation
 
