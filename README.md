@@ -12,7 +12,7 @@ Have you ever tried to click on something only to have some other button or link
 
 The extension works by constantly tracking which elements are under the mouse. The mouse's coordinates are updated with `onmousemove`, and a loop runs in the background of each page that finds all HTML elements at those coordinates. If this set of elements is different than it was a number of milliseconds ago (this number is called the grace period), then all click events are blocked, which is achieved by wrapping the original event listeners.
 
-The real implementation is slightly more complicated than this, but this should give a general idea. The overall result is supposed to be a high-precision blocking of accidental mouse events with minimal impact on memory and CPU. See `content-script.js` for more implementation details.
+The real implementation is slightly more complicated than this, but this should give a general idea. The overall result is supposed to be a high-precision blocking of accidental mouse events with minimal impact on memory and CPU. See `content.js` for more implementation details.
 
 The user has the ability to adjust the length of the grace period in the extension's options. They can also pause the extension on a page and whitelist domains.
 
