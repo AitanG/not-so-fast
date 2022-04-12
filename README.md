@@ -2,7 +2,9 @@
 
 ## Overview
 
-Not So Fast is a Chrome extension under development that prevents accidental clicks due to elements moving around on the page. I set up this repo to facilitate development, and I'll ultimately use it to open-source the extension once it makes it to the web store.
+Not So Fast is a Chrome extension that prevents accidental clicks due to elements moving around on the page.
+
+https://chrome.google.com/webstore/detail/not-so-fast/hiegkehekilfjpcolajfmlcjjbohloei/related
 
 ## Problem
 
@@ -20,10 +22,8 @@ The user has the ability to adjust the length of the grace period in the extensi
 
 ## Progress
 
-The code I have works! Anyone can download this repo and try it out on Chrome in developer mode (see instructions [here](https://webkul.com/blog/how-to-install-the-unpacked-extension-in-chrome/)). However, there are a few major things I still need to do:
+The code I have works! Anyone can install the extension on a Chromium browser like Google Chrome or Microsoft Edge. However, there are a few major things I still need to do:
 * Optimizing for real-world usage
 * Lots of testing, and potential debugging of edge cases
 * Paying some more attention to UI
-* Productionizing
-* Getting approved on the Chrome Web Store
 * Getting the extension ready for other browsers (i.e., Edge, Firefox, Safari)
