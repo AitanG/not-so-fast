@@ -4,21 +4,25 @@
 
 Not So Fast is a Chrome extension that prevents accidental clicks due to elements moving around on the page.
 
-https://chrome.google.com/webstore/detail/not-so-fast/hiegkehekilfjpcolajfmlcjjbohloei/related
+[Chrome Web Store extension](https://chrome.google.com/webstore/detail/not-so-fast/hiegkehekilfjpcolajfmlcjjbohloei/related)
 
 ## Problem
 
-Have you ever tried to click on something only to have some other button or link take its place right as you click on it? You meant to click on the first thing, and it seems obvious to everyone—that is, everyone but your browser. That's the problem Not So Fast solves.
+Have you ever tried to click on something only to have some other button or link take its place right as you click on it? That's the problem Not So Fast solves.
 
-Not So Fast detects when elements have moved near your mouse and sets up a short "grace period" where any accidental clicks are ignored. This prevents unintended actions, like pressing the wrong button, losing your place on the page, or opening dangerous links. The added security also reduces the cognitive load of using your pointing device of choice, making for a more pleasant browsing experience.
+Not So Fast detects when elements have moved near your cursor and sets up a short "grace period" where any accidental clicks are ignored. This can prevent things like pressing the wrong button, losing your place on the page, or opening dangerous links. The added security also makes for a more pleasant browsing experience, since you don't have to worry as much about accidentally clicking the wrong thing.
 
 ## Implementation
 
-The extension works by constantly tracking which elements are under the mouse. The mouse's coordinates are updated with `onmousemove`, and a loop runs in the background of each page that finds all HTML elements at those coordinates. If this set of elements is different than it was a number of milliseconds ago (this number is called the grace period), then all click events are blocked, which is achieved by wrapping the original event listeners.
+The extension works by constantly tracking which elements are under the cursor. The cursor's coordinates are updated with `onmousemove`, and each page has a loop that runs in the background that finds all HTML elements at those coordinates. If this set of elements is different than it was a number of milliseconds ago (this number is called the grace period), then all click events are disabled. This is achieved by wrapping the original event listeners with logic that calls `preventDefault`.
 
-The real implementation is slightly more complicated than this, but this should give a general idea. The overall result is supposed to be a high-precision blocking of accidental mouse events with minimal impact on memory and CPU. See `content.js` for more implementation details.
+The real implementation is slightly more complicated than this, but this should give a general idea. The overall result is supposed to be a high-precision blocking of accidental mouse events with minimal performance overhead. See `content.js` for more implementation details.
 
-The user has the ability to adjust the length of the grace period in the extension's options. They can also pause the extension on a page and whitelist domains.
+The user has the ability to adjust the length of the grace period in the extension's options. They can also pause the extension on a page and/or permanently whitelist domains.
+
+Screenshot of whitelisting interface:
+
+<img src="https://github.com/AitanG/not-so-fast/blob/master/popup.png?raw=true" alt="Screenshot of whitelisting interface" width="300"/>
 
 ## Progress
 
