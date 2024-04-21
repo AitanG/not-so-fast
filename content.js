@@ -93,7 +93,7 @@
     let shouldBlock = event => (
         event.target._hovering
         && isMouseStationary()
-        && areDifferent(lastNHoverElems[(bufferIndex + 1) % GRACE_PERIOD_CYCLES], event.path)
+        && areDifferent(lastNHoverElems[(bufferIndex + 1) % GRACE_PERIOD_CYCLES], event.composedPath())
     )
 
 
